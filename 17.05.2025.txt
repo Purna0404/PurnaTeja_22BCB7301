@@ -1,0 +1,36 @@
+create database teja;
+create database VIT_AP;
+create database VIT_BHOPAL;
+use teja;
+create table student(
+s_id int,
+s_name varchar(40),
+s_mark int,
+s_cgpa float);
+
+
+
+
+select * from student;
+alter table student drop column s_mark;
+
+alter table student add (
+s_country varchar(50) default 'INDIA');
+insert into student values(402,'kiran',99);
+insert into student values(403,'maran',92);
+update student set s_cgpa=s_cgpa-0.5;
+
+use VIT_BHOPAL;
+create table students(
+sname varchar(70),
+sid int,
+smarks float,
+saddress varchar(100));
+select *from students;
+insert into students values('teja',1,99.8,'vijayawada'),
+('purna',2,97.9,'vijayawada'),
+('srinivas',3,98.4,'guntur'),
+('lasya',4,98.7,'petaa'),
+('madhu',5,92.1,'tenali');
+update students set smarks=98.1 where sid=5;
+select * from students;
