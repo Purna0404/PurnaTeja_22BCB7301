@@ -1,0 +1,41 @@
+show databases;
+drop database mysql;
+use my collage;
+show tables from my collage;
+drop table it;
+drop table cse;
+alter table cse drop column s_count;
+
+#using woker databe
+select * from worker;
+delete from worker;
+
+delete from worker where salary <=200000;
+delete from worker where department = hr;
+
+truncate table worker;
+
+
+create database my collage;
+drop database my collage;
+use my collage;
+create table cse(
+id int,
+name varchar(25));
+start transaction;
+insert into cse values (7301,'Teja');
+savepoint a11;
+insert into cse values (7305,'purna');
+savepoint a12;
+delete from cse where id=7305;
+
+select * from cse;
+
+rollback to a12;
+
+select * from cse;
+
+use my collage;
+select first_name as employee_name from worker;
+desc worker;
+
