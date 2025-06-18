@@ -1,0 +1,96 @@
+public class Tester {
+public static void main (String[] args) {
+// Creating a Mongo client
+MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+MongoDatabase database = mongoClient.getDatabase ("myDb") ;
+
+// Get the collection
+MongoCollection<Document> collection = database.getCollection ("sampleCollection");
+
+// Find all documents
+collection.deleteOne (Filters.eq("First Name", "Mahesh") );
+System. out.println ("Document deleted.");
+System. out.println (" *** Documents *** ");
+
+// Select a particular document
+FindIterable<Document> documents = collection.find();
+
+for (Document document : documents) {
+System. out.println (document);
+
+  }
+ }
+}
+
+
+
+MongoDatabase database = mongoClient.getDatabase ("test");
+// Get the collection
+	MongoCollection<Document> collection = database.getCollection("sales");
+// Find all documents
+	collection.deleteOne(Filters.eq("item","Cappuccino"));
+	collection.deleteMany(Filters.eq("item", "Cappuccino"));
+	System.out.println("Document deleted.");
+	System.out.println("***Documents***");
+
+
+
+List<Document> documentList = new ArrayList<>();
+        for (Document doc : collection.find()) {
+            documentList.add(doc);
+        }
+
+        Collections.sort(documentList, (doc1, doc2) -> {
+            Double price1 = doc1.getDouble("price");
+            Double price2 = doc2.getDouble("price");
+            return price2.compareTo(price1);
+        });
+
+        for (Document doc : documentList) {
+            System.out.println("Sorted Document: " + doc);
+        }
+java based logic to sort
+
+
+
+
+// necessary java imports 
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class SortAsc {
+
+    public static void main(String[] args) {
+
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("vit");
+
+        // Get the collection
+        MongoCollection<Document> collection = database.getCollection("sales");
+
+        // Retrieve the documents and store them in a list
+        List<Document> documentList = new ArrayList<>();
+        for (Document doc : collection.find()) {
+            documentList.add(doc);
+        }
+
+        // Sort documents in descending order by pice
+
+        Collections.sort(documentList, (doc1, doc2) -> {
+            Double price1 = doc1.getDouble("price");
+            Double price2 = doc2.getDouble("price");
+            return price2.compareTo(price1); // Descending order
+          // for ascending order:  return price1.compareTo(price2); 
+
+        });
+
+        // Printing
+        for (Document doc : documentList) {
+            System.out.println("Sorted Document: " + doc);
+        }
+
+       
+    }
+}
