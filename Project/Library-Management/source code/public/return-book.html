@@ -1,0 +1,55 @@
+<!-- public/return-book.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Return Book</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Return a Book</h1>
+    <form id="returnForm">
+      <label>Select Issued Book</label>
+      <select id="issueSelect" required></select>
+
+      <button type="submit">Return Book</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    async function loadIssues() {
+      const issues = await fetch("/issues").then(res => res.json());
+
+      const select = document.getElementById("issueSelect");
+      for (const issue of issues) {
+        if (!issue.returnDate) {
+          // Fetch book and member details
+          const book = await fetch(`/books/${issue.bookId}`).then(r => r.json());
+          const member = await fetch(`/members/${issue.memberId}`).then(r => r.json());
+
+          const option = document.createElement("option");
+          option.value = issue._id;
+          option.textContent = `${book.title} → ${member.name} (${member.email}) on ${new Date(issue.issueDate).toLocaleDateString()}`;
+          select.appendChild(option);
+        }
+      }
+    }
+
+    document.getElementById("returnForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const issueId = document.getElementById("issueSelect").value;
+
+      const res = await fetch(`/issues/return/${issueId}`, {
+        method: "PUT"
+      });
+
+      const data = await res.json();
+      document.getElementById("message").innerText =
+        res.ok ? "✅ Book returned successfully!" : `❌ Error: ${data.error || 'Failed to return book.'}`;
+    });
+
+    loadIssues();
+  </script>
+</body>
+</html>

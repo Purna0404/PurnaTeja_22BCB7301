@@ -1,0 +1,45 @@
+<!-- public/main.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Library Management Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .nav-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      padding: 1rem;
+      background: #007bff;
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      transition: background 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Library Management System</h1>
+    <p>Select a task to perform:</p>
+
+    <div class="nav-links">
+      <a href="index.html">📖 View Books</a>
+      <a href="add-book.html">➕ Add Book</a>
+      <a href="add-member.html">👤 Add Member</a>
+      <a href="issue-book.html">📗 Issue Book</a>
+      <a href="return-book.html">🔁 Return Book</a>
+    </div>
+  </div>
+</body>
+</html>

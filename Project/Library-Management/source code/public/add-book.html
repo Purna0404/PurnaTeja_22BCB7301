@@ -1,0 +1,52 @@
+<!-- public/add-book.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add New Book</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Add a Book</h1>
+    <form id="bookForm">
+      <label>Title</label>
+      <input type="text" id="title" required />
+
+      <label>Author</label>
+      <input type="text" id="author" required />
+
+      <label>ISBN</label>
+      <input type="text" id="isbn" required />
+
+      <label>Copies Available</label>
+      <input type="number" id="copies" required />
+
+      <button type="submit">Add Book</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    document.getElementById("bookForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const book = {
+        title: document.getElementById("title").value,
+        author: document.getElementById("author").value,
+        isbn: document.getElementById("isbn").value,
+        copiesAvailable: parseInt(document.getElementById("copies").value)
+      };
+
+      const res = await fetch("/books", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(book)
+      });
+
+      const data = await res.json();
+      document.getElementById("message").innerText =
+        res.ok ? "✅ Book added successfully!" : `❌ Error: ${data.error || 'Failed to add book.'}`;
+    });
+  </script>
+</body>
+</html>

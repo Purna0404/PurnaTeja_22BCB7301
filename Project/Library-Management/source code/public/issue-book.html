@@ -1,0 +1,68 @@
+<!-- public/issue-book.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Issue Book</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Issue a Book</h1>
+    <form id="issueForm">
+      <label>Select Member</label>
+      <select id="memberSelect" required></select>
+
+      <label>Select Book</label>
+      <select id="bookSelect" required></select>
+
+      <button type="submit">Issue Book</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    async function loadOptions() {
+      const members = await fetch("/members").then(res => res.json());
+      const books = await fetch("/books").then(res => res.json());
+
+      const memberSelect = document.getElementById("memberSelect");
+      const bookSelect = document.getElementById("bookSelect");
+
+      members.forEach(member => {
+        const option = document.createElement("option");
+        option.value = member._id;
+        option.textContent = `${member.name} (${member.email})`;
+        memberSelect.appendChild(option);
+      });
+
+      books
+        .filter(book => book.copiesAvailable > 0)
+        .forEach(book => {
+          const option = document.createElement("option");
+          option.value = book._id;
+          option.textContent = `${book.title} by ${book.author} (Available: ${book.copiesAvailable})`;
+          bookSelect.appendChild(option);
+        });
+    }
+
+    document.getElementById("issueForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const memberId = document.getElementById("memberSelect").value;
+      const bookId = document.getElementById("bookSelect").value;
+
+      const res = await fetch("/issues", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ memberId, bookId })
+      });
+
+      const data = await res.json();
+      document.getElementById("message").innerText =
+        res.ok ? "✅ Book issued successfully!" : `❌ Error: ${data.error || 'Failed to issue book.'}`;
+    });
+
+    loadOptions();
+  </script>
+</body>
+</html>

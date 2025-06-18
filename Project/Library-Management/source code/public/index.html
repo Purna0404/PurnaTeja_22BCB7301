@@ -1,0 +1,27 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Library – Book List</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Library Books</h1>
+    <ul id="bookList"></ul>
+  </div>
+
+  <script>
+    fetch('/books')
+      .then(res => res.json())
+      .then(books => {
+        const list = document.getElementById('bookList');
+        books.forEach(book => {
+          const item = document.createElement('li');
+          item.innerText = `${book.title} by ${book.author} (Available: ${book.copiesAvailable})`;
+          list.appendChild(item);
+        });
+      });
+  </script>
+</body>
+</html>
